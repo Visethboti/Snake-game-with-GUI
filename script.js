@@ -34,6 +34,7 @@ function setup(){
 }
 
 function drawMap(){
+  mapData = "";
   for(var y = 0; y < height; y++){
     for(var x = 0; x < width; x++){
       if(x==0 || x == width-1 || y == 0 || y == height-1)
@@ -57,6 +58,33 @@ function move(){
 
 function check(){
 
+}
+
+function myFunction(){
+  alert("hello");
+}
+
+window.onkeydown = function(event){
+  var key = String.fromCharCode(event.keyCode);
+  switch (key) {
+    case 'W':
+      snakeY -= 1;
+      break;
+    case 'S':
+      snakeY += 1;
+      break;
+    case 'A':
+      snakeX -= 1;
+      break;
+    case 'D':
+      snakeX += 1;
+      break;
+    default:
+      alert("wrong key");
+      break;
+  }
+
+  drawMap();
 }
 
 //////////////////////////////////////////////////////
