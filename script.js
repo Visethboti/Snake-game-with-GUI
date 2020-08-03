@@ -8,8 +8,9 @@ var width = 50;
 var height = 50;
 
 var gameMap = document.querySelector('#map');
-var status = document.querySelector('#status');
-var mapData = ""
+var gameStatus = document.querySelector('#status');
+var mapData = "";
+var statusData = "";
 
 var foodX = 1;
 var foodY = 1;
@@ -20,6 +21,8 @@ var snakeY;
 var snakeBodyLoc;
 
 var gameOver;
+var score;
+var size;
 
 //////////////// Functions //////////////////////////
 
@@ -30,7 +33,11 @@ function setup(){
   snakeX = width/2;
   snakeY = height/2;
 
+  snakeBodyLoc = [[],[]];
+
   gameOver = false;
+  score = 0;
+  size = 0;
 }
 
 function drawMap(){
@@ -49,7 +56,6 @@ function drawMap(){
   }
 
   gameMap.innerHTML = mapData;
-  status.innterHTML = foodLoc;
 }
 
 function move(){
@@ -57,34 +63,63 @@ function move(){
 }
 
 function check(){
+  if(snakeX == foodX && snakeY == foodY){
+    do{
+      foodX = Math.floor(Math.random() * (width-2)) + 1;
+      foodY = Math.floor(Math.random() * (height-2)) + 1;
+    }while(snakeX == foodX && snakeY == foodY);
 
+    size++;
+    score++;
+  }
+
+  if(size==0){
+    snakeBodyLoc[0][0] = snakeX;
+    snakeBodyLoc[0][1] = snakeY;
+  }
+}
+
+function printStatus(){
+  statusData = "|Status| score: "+score+" size: "+size;
+  statusData += "<br/>snakeX:"+snakeX+" snakeY:"+snakeY+"<br/>";
+  if(size>0){
+    snakeBodyLoc.forEach(function(item, index){
+      statusData += "|x:"+item[0]+"y:"+item[1]+"|";
+    });
+  }
+
+  gameStatus.innerHTML = statusData;
 }
 
 function myFunction(){
-  alert("hello");
+  alert(snakeBodyLoc[0][0]+" "+snakeBodyLoc[0][1]);
 }
 
 window.onkeydown = function(event){
-  var key = String.fromCharCode(event.keyCode);
-  switch (key) {
-    case 'W':
-      snakeY -= 1;
-      break;
-    case 'S':
-      snakeY += 1;
-      break;
-    case 'A':
-      snakeX -= 1;
-      break;
-    case 'D':
-      snakeX += 1;
-      break;
-    default:
-      alert("wrong key");
-      break;
-  }
+  if(!gameOver){
+    var key = String.fromCharCode(event.keyCode);
+    switch (key) {
+      case 'W':
+        snakeY -= 1;
+        break;
+      case 'S':
+        snakeY += 1;
+        break;
+      case 'A':
+        snakeX -= 1;
+        break;
+      case 'D':
+        snakeX += 1;
+        break;
+      default:
+        alert(snakeBodyLoc[0][0]+" "+snakeBodyLoc[0][1]);;
+        break;
+    }
 
-  drawMap();
+    check();
+    drawMap();
+    printStatus();
+  }
 }
 
 //////////////////////////////////////////////////////
@@ -92,4 +127,5 @@ window.onkeydown = function(event){
 function game(){
   setup();
   drawMap();
+  printStatus();
 }
