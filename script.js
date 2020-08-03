@@ -50,6 +50,17 @@ function drawMap(){
         mapData += snakeHead;
       else if (x == foodX && y == foodY)
         mapData += food;
+      else if (size > 0){
+        var exist = false;
+        snakeBodyLoc.forEach((item, i) => {
+          if(x == item[0] && y == item[1])
+            exist = true;
+        });
+        if(exist)
+          mapData += snakeBody;
+        else
+          mapData += empty;
+      }
       else
         mapData += empty;
     }
