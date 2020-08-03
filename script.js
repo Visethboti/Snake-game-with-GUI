@@ -33,7 +33,7 @@ function setup(){
   snakeX = width/2;
   snakeY = height/2;
 
-  snakeBodyLoc = [[],[]];
+  snakeBodyLoc = [];
 
   gameOver = false;
   score = 0;
@@ -58,10 +58,6 @@ function drawMap(){
   gameMap.innerHTML = mapData;
 }
 
-function move(){
-
-}
-
 function check(){
   if(snakeX == foodX && snakeY == foodY){
     do{
@@ -71,9 +67,19 @@ function check(){
 
     size++;
     score++;
+    snakeBodyLoc.push([0,0]);
   }
+}
 
-  if(size==0){
+function snakeBodyFun(){
+  if(size>0){
+    if(size > 1){
+      for(var i = size-1; i > 0; i--){
+        snakeBodyLoc[i][0] = snakeBodyLoc[i-1][0];
+        snakeBodyLoc[i][1] = snakeBodyLoc[i-1][1];
+      }
+    }
+
     snakeBodyLoc[0][0] = snakeX;
     snakeBodyLoc[0][1] = snakeY;
   }
@@ -91,12 +97,20 @@ function printStatus(){
   gameStatus.innerHTML = statusData;
 }
 
-function myFunction(){
-  alert(snakeBodyLoc[0][0]+" "+snakeBodyLoc[0][1]);
+//////////////////////////////////////////////////////
+
+// onload
+function game(){
+  setup();
+  drawMap();
+  printStatus();
 }
 
+// on keyclick
 window.onkeydown = function(event){
   if(!gameOver){
+    snakeBodyFun();
+
     var key = String.fromCharCode(event.keyCode);
     switch (key) {
       case 'W':
@@ -120,12 +134,4 @@ window.onkeydown = function(event){
     drawMap();
     printStatus();
   }
-}
-
-//////////////////////////////////////////////////////
-
-function game(){
-  setup();
-  drawMap();
-  printStatus();
 }
