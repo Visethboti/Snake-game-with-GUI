@@ -53,8 +53,10 @@ function drawMap(){
       else if (size > 0){
         var exist = false;
         snakeBodyLoc.forEach((item, i) => {
-          if(x == item[0] && y == item[1])
+          if(x == item[0] && y == item[1]){
             exist = true;
+            return 0;
+          }
         });
         if(exist)
           mapData += snakeBody;
@@ -80,6 +82,14 @@ function check(){
     score++;
     snakeBodyLoc.push([0,0]);
   }
+  if(snakeX > width)
+	  snakeX = snakeX - width;
+  if(snakeX < 0)
+	  snakeX = snakeX + width;
+  if(snakeY > height)
+	  snakeY = snakeY - height;
+  if(snakeY < 0)
+	  snakeY = snakeY + height;
 }
 
 function snakeBodyFun(){
@@ -114,7 +124,7 @@ function printStatus(){
 function game(){
   setup();
   drawMap();
-  printStatus();
+  //printStatus();
 }
 
 // on keyclick
@@ -143,6 +153,6 @@ window.onkeydown = function(event){
 
     check();
     drawMap();
-    printStatus();
+    //printStatus();
   }
 }
